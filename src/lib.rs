@@ -1,16 +1,8 @@
 extern crate proc_macro;
 
 use proc_macro::{TokenStream};
-use quote::ToTokens;
 use syn::fold::Fold;
 use syn::{Expr, Pat, Ident};
-
-#[proc_macro_attribute]
-pub fn print_input(attr: TokenStream, item: TokenStream) -> TokenStream {
-    dbg!(&attr);
-    dbg!(&item);
-    item
-}
 
 #[proc_macro_attribute]
 pub fn tailrec(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -42,9 +34,9 @@ fn tailrec_parse(item: TokenStream) -> TokenStream {
     for arg in original_fn.sig.inputs.iter() {
         let pat = match arg {
             syn::FnArg::Typed(pat) => pat,
-            other => panic!("tailrec is not intended to be used on methods with a reciever."),
+            _other => panic!("tailrec is not intended to be used on methods with a reciever."),
         };
-        let (name, ty) = (&pat.pat, &pat.ty);
+        let (name, _ty) = (&pat.pat, &pat.ty);
         let binding = quote::quote! {
             let mut #name = #name;
         };
@@ -79,8 +71,6 @@ impl Tailrec {
 
 impl Fold for Tailrec {
     fn fold_expr(&mut self, expr: Expr) -> Expr {
-        use syn::ExprReturn;
-        use syn::Lit;
         match &expr {
             Expr::Return(e) => if let Some(e) = &e.expr {
                 let e: &Expr = &*e;

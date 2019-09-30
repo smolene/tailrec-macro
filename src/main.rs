@@ -46,7 +46,7 @@ fn repeat<F: FnMut()>(n: usize, f: F) {
     }
 }
 
-fn repeat_<F: FnMut()>(n: usize, f: F) {
+fn repeat_<F: FnMut()>(n: usize, mut f: F) {
     if n != 0 {
         f();
         return repeat_(n - 1, f);

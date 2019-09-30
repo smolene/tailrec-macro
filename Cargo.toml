@@ -1,0 +1,17 @@
+[package]
+name = "tailrec"
+version = "0.1.0"
+authors = ["husseini <tanguy.husseini@epfl.ch>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+quote = "*"
+
+[dependencies.syn]
+version = "*"
+features = ["full", "fold"]
+
+[lib]
+proc-macro = true
